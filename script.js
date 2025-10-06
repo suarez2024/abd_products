@@ -188,6 +188,131 @@ function init() {
 
 // Iniciar la aplicación cuando se carga la página
 document.addEventListener('DOMContentLoaded', init);
+// Función para calcular el valor total de un producto
+function calculateProductTotal(price, quantity) {
+    return price * quantity;
+}
+
+// Función para actualizar las estadísticas
+function updateStats() {
+    const totalValue = products.reduce((sum, product) => {
+        return sum + calculateProductTotal(product.price, product.quantity);
+    }, 0);
+    
+    const totalProducts = products.reduce((sum, product) => {
+        return sum + product.quantity;
+    }, 0);
+    
+    let mostValuable = '-';
+    if (products.length > 0) {
+        const maxValueProduct = products.reduce((max, product) => {
+            const productValue = calculateProductTotal(product.price, product.quantity);
+            const maxValue = calculateProductTotal(max.price, max.quantity);
+            return productValue > maxValue ? product : max;
+        });
+        
+        mostValuable = `${maxValueProduct.name} (${calculateProductTotal(maxValueProduct.price, maxValueProduct.quantity).toFixed(2)} CUP)`;
+    }
+    
+    totalValueElement.textContent = `${totalValue.toFixed(2)} CUP`;
+    totalProductsElement.textContent = totalProducts;
+    mostValuableElement.textContent = mostValuable;
+}
+
+// Función para renderizar los productos
+function renderProducts() {
+    productsList.innerHTML = '';
+    
+    if (products.length === 0) {
+        productsList.innerHTML = '<div class="empty-message">No hay productos añadidos. Agregue algunos productos para comenzar.</div>';
+        return;
+    }
+    
+    products.forEach(product => {
+        const productTotal = calculateProductTotal(product.price, product.quantity);
+        
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+        productCard.innerHTML = `
+            <div class="product-header">
+                <div class="product-name">${product.name}</div>
+                <div class="product-actions">
+                    <button class="edit-btn" onclick="toggleEditForm(${product.id})">Editar</button>
+                    <button class="delete-btn" onclick="deleteProduct(${product.id})">Eliminar</button>
+                </div>
+            </div>
+            <div class="product-details">
+                <div class="product-detail">
+                    <span class="detail-label">Precio Unitario</span>
+                    <span class="detail-value">${product.price.toFixed(2)} CUP</span>
+                </div>
+                <div class="product-detail">
+                    <span class="detail-label">Cantidad</span>
+                    <span class="detail-value">${product.quantity}</span>
+                </div>
+            </div>
+            <div class="product-total">
+                Valor Total: ${productTotal.toFixed(2)} CUP
+            </div>
+            <div class="edit-form" id="edit-form-${product.id}">
+                <input type="number" id="edit-price-${product.id}" placeholder="Nuevo precio" value="${product.price}" step="0.01" min="0">
+                <input type="number" id="edit-quantity-${product.id}" placeholder="Nueva cantidad" value="${product.quantity}" min="1">
+                <button class="save-btn" onclick="saveProductChanges(${product.id})">Guardar Cambios</button>
+            </div>
+        `;
+        
+        productsList.appendChild(productCard);
+    });
+}
+
+// Función para mostrar/ocultar el formulario de edición
+function toggleEditForm(id) {
+    const editForm = document.getElementById(`edit-form-${id}`);
+    const isVisible = editForm.style.display === 'block';
+    
+    // Ocultar todos los formularios de edición primero
+    document.querySelectorAll('.edit-form').forEach(form => {
+        form.style.display = 'none';
+    });
+    
+    // Mostrar u ocultar el formulario seleccionado
+    editForm.style.display = isVisible ? 'none' : 'block';
+}
+
+// Función para guardar los cambios de un producto
+function saveProductChanges(id) {
+    const newPrice = parseFloat(document.getElementById(`edit-price-${id}`).value);
+    const newQuantity = parseInt(document.getElementById(`edit-quantity-${id}`).value);
+    
+    if (newPrice > 0 && newQuantity > 0) {
+        editProduct(id, newPrice, newQuantity);
+    } else {
+        alert('Por favor, ingrese valores válidos para precio y cantidad.');
+    }
+}
+
+// Función para guardar en localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('products', JSON.stringify(products));
+}
+
+// Función para cargar desde localStorage
+function loadFromLocalStorage() {
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+        products = JSON.parse(storedProducts);
+    }
+}
+
+// Inicializar la aplicación
+function init() {
+    loadFromLocalStorage();
+    updateStats();
+    renderProducts();
+}
+
+// Iniciar la aplicación cuando se carga la página
+document.addEventListener('DOMContentLoaded', init);
         return;
     }
     
