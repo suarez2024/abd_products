@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - CUP</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistema de Gestión de Productos</h1>
+            <p class="subtitle">Moneda: CUP (Peso Cubano)</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Panel de estadísticas -->
+            <section class="stats-panel">
+                <h2>Estadísticas Generales</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Valor Total</h3>
+                        <p id="total-value" class="stat-value">0.00 CUP</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Productos Totales</h3>
+                        <p id="total-products" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Cantidad Total</h3>
+                        <p id="total-quantity" class="stat-value">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Formulario para agregar productos -->
+            <section class="add-product">
+                <h2>Agregar Producto</h2>
+                <form id="product-form">
+                    <div class="form-group">
+                        <label for="product-name">Nombre del Producto:</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-price">Precio (CUP):</label>
+                            <input type="number" id="product-price" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-quantity">Cantidad:</label>
+                            <input type="number" id="product-quantity" min="1" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Agregar Producto</button>
+                </form>
+            </section>
+
+            <!-- Lista de productos -->
+            <section class="product-list">
+                <h2>Lista de Productos</h2>
+                <div id="products-container" class="products-container">
+                    <!-- Los productos se mostrarán aquí dinámicamente -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
