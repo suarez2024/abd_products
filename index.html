@@ -5,56 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Productos - CUP</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Sistema de Gestión de Productos</h1>
-            <p>Moneda: <strong>CUP</strong></p>
+            <p class="subtitle">Ventas Portuondo</p>
         </header>
 
         <div class="main-content">
-            <section class="form-section">
-                <h2>Añadir Nuevo Producto</h2>
+            <!-- Panel de estadísticas -->
+            <section class="stats-panel">
+                <h2>Estadísticas Generales</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Valor Total Inventario</h3>
+                        <p id="total-value" class="stat-value">0.00 CUP</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Productos Totales</h3>
+                        <p id="total-products" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Cantidad Total</h3>
+                        <p id="total-quantity" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Unidades Vendidas Hoy</h3>
+                        <p id="today-sold" class="stat-value">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Valor Adquirido Hoy</h3>
+                        <p id="today-value" class="stat-value">0.00 CUP</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Ventas Últimos 10 Días</h3>
+                        <p id="last10-sold" class="stat-value">0 unidades</p>
+                        <p id="last10-value" class="stat-value">0.00 CUP</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gráfico de ventas -->
+            <section class="chart-section">
+                <h2>Ventas de los Últimos 10 Días</h2>
+                <div class="chart-container">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Formulario para agregar productos -->
+            <section class="add-product">
+                <h2>Agregar Producto</h2>
                 <form id="product-form">
                     <div class="form-group">
                         <label for="product-name">Nombre del Producto:</label>
                         <input type="text" id="product-name" required>
                     </div>
-                    <div class="form-group">
-                        <label for="product-price">Precio (CUP):</label>
-                        <input type="number" id="product-price" min="0" step="0.01" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-price">Precio (CUP):</label>
+                            <input type="number" id="product-price" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-quantity">Cantidad:</label>
+                            <input type="number" id="product-quantity" min="1" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="product-quantity">Cantidad:</label>
-                        <input type="number" id="product-quantity" min="1" required>
-                    </div>
-                    <button type="submit" id="add-btn">Añadir Producto</button>
+                    <button type="submit" class="btn-primary">Agregar Producto</button>
                 </form>
             </section>
 
-            <section class="stats-section">
-                <h2>Estadísticas</h2>
-                <div class="stats-container">
-                    <div class="stat-card">
-                        <h3>Valor Total</h3>
-                        <p id="total-value">0.00 CUP</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total de Productos</h3>
-                        <p id="total-products">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Producto Más Valioso</h3>
-                        <p id="most-valuable">-</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="products-section">
+            <!-- Lista de productos -->
+            <section class="product-list">
                 <h2>Lista de Productos</h2>
-                <div id="products-list" class="products-list">
-                    <!-- Los productos se añadirán aquí dinámicamente -->
+                <div id="products-container" class="products-container">
+                    <!-- Los productos se mostrarán aquí dinámicamente -->
                 </div>
             </section>
         </div>
